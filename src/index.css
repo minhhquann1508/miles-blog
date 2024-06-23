@@ -6,12 +6,12 @@
   font-family: 'main-font';
   src: url('./assets/font/Nunito-VariableFont_wght.ttf');
   font-style: normal;
-  font-weight: 600;
 }
 
 *{
   font-family: 'main-font' !important;
-  font-size: 15.5px !important;
+  font-size: 15.5px;
+  font-weight: 600;
 }
 
 a:hover {

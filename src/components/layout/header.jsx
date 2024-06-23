@@ -29,7 +29,7 @@ function Header() {
                         </li>
                     ))}
                 </ul>
-                <div className='max-lg:hidden w-[300px]'>
+                <div className='max-lg:hidden w-[280px]'>
                     <Input size="large" placeholder="Nhập để tìm kiếm ..." prefix={<SearchOutlined />} />
                 </div>
                 <div className="max-md:hidden flex gap-3">
