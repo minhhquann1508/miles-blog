@@ -1,7 +1,13 @@
-import { Input, Button } from 'antd';
+import { Link, useNavigate } from "react-router-dom";
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import { signOut } from "../../redux/slice/authSlice";
+
+import { Input, Button, Avatar } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-import { Link, useNavigate } from "react-router-dom";
+import { ERROR_AVATAR_IMAGE } from "../../utils/constant";
 
 import Logo from "./logo"
 
@@ -13,9 +19,17 @@ const routes = [
 
 function Header() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { user } = useSelector((state) => state.auth);
 
     const handleNavigate = (link) => {
         navigate(link);
+    }
+
+    const handleLogout = () => {
+        dispatch(signOut());
+        navigate('/login');
     }
 
     return (
@@ -34,8 +48,17 @@ function Header() {
                 </div>
                 <div className="max-md:hidden flex gap-3">
                     <Button className='lg:hidden' size='large'><SearchOutlined /></Button>
-                    <Button size='large' onClick={() => handleNavigate('/register')}>Đăng ký</Button>
-                    <Button type='primary' size='large' onClick={() => handleNavigate('/login')}>Đăng nhập</Button>
+                    {user ?
+                        <div className='flex gap-3 items-center'>
+                            <Avatar src={<img src={user.avatar || ERROR_AVATAR_IMAGE} alt="profile" />} />
+                            <Button className="underline" type="text" onClick={handleLogout}>Đăng xuất</Button>
+                        </div> :
+                        <div className='flex gap-3'>
+                            <Button size='large' onClick={() => handleNavigate('/register')}>Đăng ký</Button>
+                            <Button type='primary' size='large' onClick={() => handleNavigate('/login')}>Đăng nhập</Button>
+                        </div>
+                    }
+
                 </div>
             </div>
         </header>

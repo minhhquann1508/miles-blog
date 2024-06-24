@@ -1,12 +1,47 @@
-import { LockOutlined, UserOutlined, GoogleOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Form, Input, notification } from 'antd';
 
-const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-}
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+
+import { signupApi } from '../apis/user';
 
 function RegisterPage() {
+    const navigate = useNavigate();
+
+    const mutation = useMutation({
+        mutationFn: signupApi,
+        onSuccess: (response) => {
+            if (response.status === 201) {
+                notification.success({
+                    message: 'Đăng ký thành công!',
+                    duration: 1,
+                    description: response.data.message,
+                });
+                setTimeout(() => {
+                    navigate('/login');
+                }, 1000);
+            } else {
+                notification.error({
+                    message: 'Đăng ký thất bại',
+                    duration: 1,
+                    description: response.data.message,
+                });
+            }
+        },
+        onError: (error) => {
+            notification.error({
+                message: 'Đăng ký thất bại',
+                duration: 1,
+                description: error.message,
+            });
+        },
+    });
+
+    const onFinish = async (values) => {
+        mutation.mutate(values);
+    }
+
     return (
         <div className="flex items-center justify-center py-10">
             <div className='flex items-center flex-col gap-5 w-[350px] sm:w-[400px]'>
@@ -99,7 +134,14 @@ function RegisterPage() {
                         />
                     </Form.Item>
                     <Form.Item>
-                        <Button size='large' style={{ width: '100%' }} type="primary" htmlType="submit" className="login-form-button">
+                        <Button
+                            loading={mutation.isPending}
+                            disabled={mutation.isPending}
+                            size='large'
+                            style={{ width: '100%' }}
+                            type="primary"
+                            htmlType="submit"
+                            className="login-form-button">
                             Đăng ký tài khoản
                         </Button>
                     </Form.Item>

@@ -1,12 +1,49 @@
-import { LockOutlined, UserOutlined, GoogleOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Form, Input, notification } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 
-const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-}
+import { signinApi } from '../apis/user'
+
+import { signInStart, signInSuccess, signInFailure } from '../redux/slice/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import GoogleAuth from '../components/layout/google';
 
 function LoginPage() {
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+
+    const { isLoading, error } = useSelector((state) => state.auth)
+
+    const onFinish = async (values) => {
+        try {
+            dispatch(signInStart());
+
+            const res = await signinApi(values);
+
+            dispatch(signInSuccess(res.data));
+
+            if (res.data.success == false) {
+                dispatch(signInFailure(res.data));
+                return;
+            }
+            navigate('/');
+        } catch (error) {
+            dispatch(signInFailure(error));
+        }
+    }
+
+    useEffect(() => {
+        if (error) {
+            notification.error({
+                message: 'Đăng nhập không thành công',
+                description: error,
+                duration: 1,
+            })
+        }
+    }, [error])
+
     return (
         <div className="flex items-center justify-center py-10">
             <div className='flex items-center flex-col gap-5 w-[350px] sm:w-[400px]'>
@@ -56,15 +93,12 @@ function LoginPage() {
                         />
                     </Form.Item>
                     <Form.Item>
-                        <Button size='large' style={{ width: '100%' }} type="primary" htmlType="submit" className="login-form-button">
+                        <Button loading={isLoading} disabled={isLoading} size='large' style={{ width: '100%' }} type="primary" htmlType="submit" className="login-form-button">
                             Đăng nhập
                         </Button>
                     </Form.Item>
                     <Form.Item>
-                        <Button size='large' style={{ width: '100%' }} type="default" htmlType="submit" className="login-form-button flex items-center">
-                            <span>Đăng nhập với tài khoản Google</span>
-                            <span><GoogleOutlined /></span>
-                        </Button>
+                        <GoogleAuth />
                     </Form.Item>
                     <div className='max-sm:flex-col-reverse gap-2 flex justify-between'>
                         <Link className='text-sm underline' to='/forgot-password'>Quên mật khẩu ?</Link>
