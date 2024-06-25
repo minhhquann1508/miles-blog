@@ -5,15 +5,17 @@ import LoginPage from '../pages/login';
 import RegisterPage from '../pages/register';
 import BlogDetailPage from '../pages/blog-detail';
 import SearchPage from '../pages/search';
+import CategoryPage from '../pages/category';
 import NotFoundPage from '../pages/not-found'
 
 export const routes = [
-    { path: '/', element: HomePage },
-    { path: '/about', element: AboutPage },
-    { path: '/contact', element: ContactPage },
-    { path: '/login', element: LoginPage },
-    { path: '/register', element: RegisterPage },
-    { path: '/blog/:blogId', element: BlogDetailPage },
-    { path: '/search/:keyword', element: SearchPage },
-    { path: '*', element: NotFoundPage }
+    { path: '/', element: HomePage, showCarousel: true },
+    { path: '/about', element: AboutPage, showCarousel: true },
+    { path: '/contact', element: ContactPage, showCarousel: false },
+    { path: '/login', element: LoginPage, showCarousel: false },
+    { path: '/register', element: RegisterPage, showCarousel: false },
+    { path: '/blog/:blogId', element: BlogDetailPage, showCarousel: false },
+    { path: '/search/:keyword', element: SearchPage, showCarousel: false },
+    { path: '/category/:categorySlug', element: CategoryPage, showCarousel: true },
+    { path: '*', element: NotFoundPage, showCarousel: false }
 ];

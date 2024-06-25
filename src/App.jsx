@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { routes } from './routes/index';
 import DefaultLayout from './components/layout/default-layout';
+
 function App() {
   return (
     <Fragment>
@@ -12,7 +13,7 @@ function App() {
             <Route key={route.path}
               path={route.path}
               element={
-                <DefaultLayout>
+                <DefaultLayout showCarousel={route.showCarousel}>
                   <route.element />
                 </DefaultLayout>} />
           ))}
