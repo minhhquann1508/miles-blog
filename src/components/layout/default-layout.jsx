@@ -8,7 +8,9 @@ function DefaultLayout({ children, showCarousel }) {
         <Fragment>
             <Header />
             {showCarousel && <Carousel />}
-            {children}
+            <div className="bg-gray-100">
+                {children}
+            </div>
             <Footer />
         </Fragment>
     )

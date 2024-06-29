@@ -36,7 +36,7 @@ function Header() {
 
     return (
         <header className="py-5 border-b">
-            <div className="container flex justify-between items-center gap-5">
+            <div className="container flex justify-between items-center gap-5 ">
                 <Logo />
                 <ul className="flex gap-5 max-lg:hidden">
                     {routes.map(route => {

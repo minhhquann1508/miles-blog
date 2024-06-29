@@ -50,7 +50,7 @@ function LoginPage() {
                 <h1 className="text-3xl uppercase font-extrabold">Đăng nhập</h1>
                 <Form
                     layout='vertical'
-                    style={{ width: '100%', border: '1px solid #ccc', padding: '20px', borderRadius: '10px' }}
+                    style={{ background: '#fff', width: '100%', border: '1px solid #ccc', padding: '20px', borderRadius: '10px' }}
                     name="normal_login"
                     className="login-form"
                     initialValues={{
